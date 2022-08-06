@@ -1,0 +1,25 @@
+import pandas as pd
+import plotly.express as py
+import csv
+import statistics
+
+df = pd.read_csv('data.csv')
+math_list=df['math score'].to_list()
+
+math_mean = statistics.mean(math_list)
+math_mode = statistics.mode(math_list)
+math_median=statistics.median(math_list)
+
+math_stdv = statistics.stdev(math_list)
+
+math_1_stdv_start,math_1_stdv_end= math_mean-math_stdv,math_mean+math_stdv
+math_2_stdv_start,math_2_stdv_end= math_mean-(2*math_stdv),math_mean+(2*math_stdv)
+math_3_stdv_start,math_3_stdv_end= math_mean-(3*math_stdv),math_mean+(3*math_stdv)
+
+math_list_within_1_stdv = [result for result in math_list if result > math_1_stdv_start and result < math_1_stdv_end]
+math_list_within_2_stdv = [result for result in math_list if result > math_2_stdv_start and result < math_2_stdv_end]
+math_list_within_3_stdv = [result for result in math_list if result > math_3_stdv_start and result < math_3_stdv_end]
+
+print("{}% of data for math score which lies within 1st standard deviation".format(len(math_list_within_1_stdv)*100.0/len(math_list))) 
+print("{}% of data for math score which lies within 2nd standard deviation".format(len(math_list_within_2_stdv)*100.0/len(math_list))) 
+print("{}% of data for math score which lies within 3rd standard deviation".format(len(math_list_within_3_stdv)*100.0/len(math_list))) 
